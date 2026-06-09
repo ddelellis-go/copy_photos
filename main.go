@@ -11,6 +11,7 @@ import (
 	"io/fs"
 	"slices"
 	"encoding/json"
+	"runtime"
 
 	"github.com/moby/sys/mount"
 	"github.com/ddelellis-pkg/progbar"
@@ -48,8 +49,15 @@ func main() {
 
 	mountPoint := mountPointName()
 
+	var mountedDirs []string
+
 	//TODO: turn this into a struct that can have functions, then you can just do `defer mountedDirs.unmount()` with all this logic hidden away
-	mountedDirs, err := findAndMountDisks(mountPoint)
+	//TODO: detect if th OS is darwin (macos) and look at already mounted objects
+	if runtime.GOOS == "darwin" {
+		mountedDirs = []string{"/Volumes/Untitled/"}
+	} else {
+		mountedDirs, err = findAndMountDisks(mountPoint)
+	}
 	defer func() {
 		if !opts.KeepMounts {
 			for _, v := range mountedDirs {
