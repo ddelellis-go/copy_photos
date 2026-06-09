@@ -13,7 +13,7 @@ import (
 	"encoding/json"
 
 	"github.com/moby/sys/mount"
-	"self_utilities/progress_bar"
+	"github.com/ddelellis-pkg/progbar"
 )
 
 var opts Opts
@@ -100,7 +100,7 @@ func main() {
 		}
 	}
 
-	bar, err := progress_bar.NewProgress(len(fileQueue), 20)
+	bar, err := progbar.NewProgress(len(fileQueue), 20)
 	if err != nil {
 		debugf("Failed to initialize progress bar: %v", err)
 		err = nil
